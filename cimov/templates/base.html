@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+    {% block head %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Cimov - Comunidades em Movimento</title>
+    {{ bootstrap.load_css() }}
+    <style>
+        :root {
+            --primary-color: #7C3F23;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        footer {
+            background-color: #f8f9fa;
+        }
+
+        .brand-logo {
+            max-height: 60px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .btn-cimov {
+            background-color: #8B4513;  /* marrom escuro tipo "terra" */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-family: 'Georgia', serif;
+            font-size: 1rem;
+            border-radius: 6px;
+            transition: background-color 0.3s ease;
+        }
+    
+        .btn-cimov:hover {
+            background-color: #A0522D;  /* tom mais claro ao passar o mouse */
+        }
+    
+        .btn-reset {
+            background-color: #D3D3D3;
+            color: #333;
+            border: none;
+            padding: 10px 20px;
+            font-family: 'Georgia', serif;
+            font-size: 1rem;
+            border-radius: 6px;
+            margin-left: 10px;
+            transition: background-color 0.3s ease;
+        }
+    
+        .btn-reset:hover {
+            background-color: #B0B0B0;
+        }
+        
+    </style>
+    {% endblock %}
+</head>
+<body>
+
+    <header class="p-3 shadow-sm">
+        <div class="container d-flex align-items-center gap-3">
+            <img src="{{ url_for('static', filename='img/observatorio.png') }}" alt="Observatório Terra e Moradia" class="brand-logo">
+            <h1 class="h4 m-0">Cimov - Comunidades em Movimento</h1>
+        </div>
+    </header>
+
+    <main class="container py-4">
+        {% block content %}
+        <!-- Conteúdo dinâmico -->
+        {% endblock %}
+    </main>
+
+    <footer class="border-top mt-auto py-3">
+        <div class="container d-flex justify-content-between small text-muted">
+            <div>Desenvolvido por Observatório Terra e Moradia</div>
+            <div>Versão 1.0</div>
+        </div>
+    </footer>
+
+    {{ bootstrap.load_js() }}
+    {% block scripts %}
+    {% endblock %}
+
+</body>
+</html>

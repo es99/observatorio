@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% from 'bootstrap5/form.html' import render_form, render_form_row %}
+
+{% block content %}
+<div>
+<h1>
+    Questionário Diagnóstico - Territórios em Assentamentos Precários de João Pessoa
+</h1>
+</div>
+<form method="post">
+    {{ form.csrf_token }}
+    {{ render_form_row([form.nome_territorio, form.bairro_territorio]) }}
+    {{ render_form_row([form.qtd_familias, form.tempo_ocupacao]) }}
+    {{ render_form_row([form.infraestrutura]) }}
+    {{ render_form_row([form.risco_ambiental])}}
+    {{ render_form_row([form.risco_ambiental_outro, form.tradicional]) }}
+    {{ render_form_row([form.impacto_grande_projeto]) }}
+    {{ render_form_row([form.impacto_grande_projeto_sim]) }}
+    {{ render_form_row([form.processo_judicial]) }}
+    {{ render_form_row([form.processo_judicial_sim]) }}
+    {{ render_form_row([form.conhece_titularidade, form.conhece_titularidade_sim]) }}
+    {{ render_form_row([form.conflitos_fundiarios]) }}
+    {{ render_form_row([form.conflitos_fundiarios_sim]) }}
+    {{ render_form_row([form.ameacas, form.ameacas_relatos]) }}
+    {{ render_form_row([form.relatos_de_violencia]) }}
+    <div class="mt-4">
+        <button type="submit" class="btn-cimov">Enviar</button>
+        <button type="reset" class="btn-reset">Limpar</button>
+    </div>
+</form>
+{% endblock %}
