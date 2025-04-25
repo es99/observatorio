@@ -185,7 +185,9 @@
             const camposCondicionais = [
                 {id: 'impacto_grande_projeto', container: 'impacto-grande-container'},
                 {id: 'processo_judicial', container: 'processo-judicial-container'},
-                // Adicione outros campos aqui
+                {id: 'conhece_titularidade', container: 'titularidade-container'},
+                {id: 'conflitos_fundiarios', container: 'conflitos-container'},
+                {id: 'ameacas', container: 'ameacas-container'}
             ];
             
             camposCondicionais.forEach(campo => {
@@ -204,7 +206,10 @@
         });
         
         document.getElementById('impacto_grande_projeto')?.addEventListener('change', toggleConditionalFields);
-        // Adicione listeners para outros campos condicionais
+        document.getElementById('processo_judicial')?.addEventListener('change', toggleConditionalFields);
+        document.getElementById('conhece_titularidade')?.addEventListener('change', toggleConditionalFields);
+        document.getElementById('conflitos_fundiarios')?.addEventListener('change', toggleConditionalFields);
+        document.getElementById('ameacas')?.addEventListener('change', toggleConditionalFields);
     });
 </script>
 {% endblock %}
