@@ -1,31 +1,210 @@
 {% extends "base.html" %}
-{% from 'bootstrap5/form.html' import render_form, render_form_row %}
 
 {% block content %}
-<div>
-<h1>
-    Questionário Diagnóstico - Territórios em Assentamentos Precários de João Pessoa
-</h1>
+<div class="container">
+    <h2 class="mb-4">Formulário de Diagnóstico Territorial</h2>
+    <form method="POST" action="{{ url_for('main.index') }}" class="needs-validation" novalidate id="main-form">
+        {{ form.hidden_tag() }}
+        
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header bg-light">
+                <h3 class="h5 mb-0">Informações Básicas</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        {{ form.nome_territorio.label(class="form-label", for="nome_territorio") }}
+                        {{ form.nome_territorio(class="form-control", id="nome_territorio", required="required") }}
+                        <div class="invalid-feedback">
+                            Por favor, informe o nome do território.
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        {{ form.bairro_territorio.label(class="form-label", for="bairro_territorio") }}
+                        {{ form.bairro_territorio(class="form-control", id="bairro_territorio", required="required") }}
+                        <div class="invalid-feedback">
+                            Por favor, informe o bairro.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    {{ form.qtd_familias.label(class="form-label", for="qtd_familias") }}
+                    {{ form.qtd_familias(class="form-control", id="qtd_familias", type="number", min="0") }}
+                </div>
+                
+                <div class="mb-3">
+                    {{ form.tempo_ocupacao.label(class="form-label", for="tempo_ocupacao") }}
+                    {{ form.tempo_ocupacao(class="form-select", id="tempo_ocupacao") }}
+                </div>
+            </div>
+        </div>
+        
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header bg-light">
+                <h3 class="h5 mb-0">Infraestrutura e Riscos</h3>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    {{ form.infraestrutura.label(class="form-label") }}
+                    <div class="border p-3 rounded">
+                        {% for choice in form.infraestrutura %}
+                        <div class="form-check">
+                            {{ choice(class="form-check-input", id="infraestrutura_" ~ loop.index0) }}
+                            {{ choice.label(class="form-check-label", for="infraestrutura_" ~ loop.index0) }}
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    {{ form.risco_ambiental.label(class="form-label") }}
+                    <div class="border p-3 rounded">
+                        {% for choice in form.risco_ambiental %}
+                        <div class="form-check">
+                            {{ choice(class="form-check-input", id="risco_ambiental_" ~ loop.index0) }}
+                            {{ choice.label(class="form-check-label", for="risco_ambiental_" ~ loop.index0) }}
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div id="risco-ambiental-outro-container" class="mt-3" style="display: none;">
+                        {{ form.risco_ambiental_outro.label(class="form-label", for="risco_ambiental_outro") }}
+                        {{ form.risco_ambiental_outro(class="form-control", id="risco_ambiental_outro") }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header bg-light">
+                <h3 class="h5 mb-0">Questões Fundiárias</h3>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    {{ form.tradicional.label(class="form-label", for="tradicional") }}
+                    {{ form.tradicional(class="form-select", id="tradicional") }}
+                </div>
+                
+                <div class="mb-3">
+                    {{ form.impacto_grande_projeto.label(class="form-label", for="impacto_grande_projeto") }}
+                    {{ form.impacto_grande_projeto(class="form-select", id="impacto_grande_projeto") }}
+                    <div id="impacto-grande-container" class="mt-3" style="display: none;">
+                        {{ form.impacto_grande_projeto_sim.label(class="form-label", for="impacto_grande_projeto_sim") }}
+                        {{ form.impacto_grande_projeto_sim(class="form-control", id="impacto_grande_projeto_sim") }}
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    {{ form.processo_judicial.label(class="form-label", for="processo_judicial") }}
+                    {{ form.processo_judicial(class="form-select", id="processo_judicial") }}
+                    <div id="processo-judicial-container" class="mt-3" style="display: none;">
+                        {{ form.processo_judicial_sim.label(class="form-label", for="processo_judicial_sim") }}
+                        {{ form.processo_judicial_sim(class="form-control", id="processo_judicial_sim") }}
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    {{ form.conhece_titularidade.label(class="form-label", for="conhece_titularidade") }}
+                    {{ form.conhece_titularidade(class="form-select", id="conhece_titularidade") }}
+                    <div id="titularidade-container" class="mt-3" style="display: none;">
+                        {{ form.conhece_titularidade_sim.label(class="form-label", for="conhece_titularidade_sim") }}
+                        {{ form.conhece_titularidade_sim(class="form-control", id="conhece_titularidade_sim") }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header bg-light">
+                <h3 class="h5 mb-0">Relatos de Conflitos</h3>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    {{ form.conflitos_fundiarios.label(class="form-label", for="conflitos_fundiarios") }}
+                    {{ form.conflitos_fundiarios(class="form-select", id="conflitos_fundiarios") }}
+                    <div id="conflitos-container" class="mt-3" style="display: none;">
+                        {{ form.conflitos_fundiarios_sim.label(class="form-label", for="conflitos_fundiarios_sim") }}
+                        {{ form.conflitos_fundiarios_sim(class="form-control", id="conflitos_fundiarios_sim", rows="3") }}
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    {{ form.ameacas.label(class="form-label", for="ameacas") }}
+                    {{ form.ameacas(class="form-select", id="ameacas") }}
+                    <div id="ameacas-container" class="mt-3" style="display: none;">
+                        {{ form.ameacas_relatos.label(class="form-label", for="ameacas_relatos") }}
+                        {{ form.ameacas_relatos(class="form-control", id="ameacas_relatos", rows="3") }}
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    {{ form.relatos_de_violencia.label(class="form-label", for="relatos_de_violencia") }}
+                    {{ form.relatos_de_violencia(class="form-control", id="relatos_de_violencia", rows="4") }}
+                </div>
+            </div>
+        </div>
+        
+        <div class="d-flex justify-content-between mb-5">
+            <button type="submit" class="btn btn-cimov">Enviar Formulário</button>
+            <button type="reset" class="btn btn-reset">Limpar Formulário</button>
+        </div>
+    </form>
 </div>
-<form method="post">
-    {{ form.csrf_token }}
-    {{ render_form_row([form.nome_territorio, form.bairro_territorio]) }}
-    {{ render_form_row([form.qtd_familias, form.tempo_ocupacao]) }}
-    {{ render_form_row([form.infraestrutura]) }}
-    {{ render_form_row([form.risco_ambiental])}}
-    {{ render_form_row([form.risco_ambiental_outro, form.tradicional]) }}
-    {{ render_form_row([form.impacto_grande_projeto]) }}
-    {{ render_form_row([form.impacto_grande_projeto_sim]) }}
-    {{ render_form_row([form.processo_judicial]) }}
-    {{ render_form_row([form.processo_judicial_sim]) }}
-    {{ render_form_row([form.conhece_titularidade, form.conhece_titularidade_sim]) }}
-    {{ render_form_row([form.conflitos_fundiarios]) }}
-    {{ render_form_row([form.conflitos_fundiarios_sim]) }}
-    {{ render_form_row([form.ameacas, form.ameacas_relatos]) }}
-    {{ render_form_row([form.relatos_de_violencia]) }}
-    <div class="mt-4">
-        <button type="submit" class="btn-cimov">Enviar</button>
-        <button type="reset" class="btn-reset">Limpar</button>
-    </div>
-</form>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('main-form');
+        
+        // Remove toda a validação JavaScript inicial
+        form.addEventListener('submit', function(event) {
+            console.log("Formulário submetido - verificando dados...");
+            
+            // Debug: Mostra todos os dados do formulário
+            const formData = new FormData(form);
+            for (const [key, value] of formData.entries()) {
+                console.log(key, "=", value);
+            }
+            
+            // Permite o envio SEM validação JavaScript
+            // A validação será feita pelo servidor
+            return true;
+        });
+        
+        // Mantém apenas a lógica para mostrar/ocultar campos
+        function toggleConditionalFields() {
+            const riscoOutro = document.querySelector('input[name="risco_ambiental"][value="outros"]');
+            if (riscoOutro) {
+                document.getElementById('risco-ambiental-outro-container').style.display = 
+                    riscoOutro.checked ? 'block' : 'none';
+            }
+            
+            // Adicione os outros campos condicionais conforme necessário
+            const camposCondicionais = [
+                {id: 'impacto_grande_projeto', container: 'impacto-grande-container'},
+                {id: 'processo_judicial', container: 'processo-judicial-container'},
+                // Adicione outros campos aqui
+            ];
+            
+            camposCondicionais.forEach(campo => {
+                const element = document.getElementById(campo.id);
+                if (element) {
+                    document.getElementById(campo.container).style.display = 
+                        element.value === 'sim' ? 'block' : 'none';
+                }
+            });
+        }
+        
+        // Inicializa e configura listeners
+        toggleConditionalFields();
+        document.querySelectorAll('input[name="risco_ambiental"]').forEach(input => {
+            input.addEventListener('change', toggleConditionalFields);
+        });
+        
+        document.getElementById('impacto_grande_projeto')?.addEventListener('change', toggleConditionalFields);
+        // Adicione listeners para outros campos condicionais
+    });
+</script>
 {% endblock %}

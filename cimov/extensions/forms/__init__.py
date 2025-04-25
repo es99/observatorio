@@ -1,12 +1,12 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, IntegerField, SelectField, SelectMultipleField, TextAreaField
-from wtforms.validators import DataRequired
+from wtforms.validators import DataRequired, InputRequired
 from wtforms.widgets import ListWidget, CheckboxInput
 
 class MainForm(FlaskForm):
     nome_territorio = StringField('1. Nome do território atendido', validators=[DataRequired()])
     bairro_territorio = StringField('2. Bairro onde está localizado', validators=[DataRequired()])
-    qtd_familias = IntegerField('3. Aproximadamente, quantas famílias vivem na área?', validators=[DataRequired()])
+    qtd_familias = IntegerField('3. Aproximadamente, quantas famílias vivem na área?')
     
     tempo_ocupacao = SelectField(
         '4. Há quanto tempo existe a ocupação?',
@@ -16,7 +16,6 @@ class MainForm(FlaskForm):
             ('6_10', '6 a 10 anos'),
             ('mais_10', 'Mais de 10 anos')
         ],
-        validators=[DataRequired()]
     )
     
     infraestrutura = SelectMultipleField(
@@ -31,7 +30,7 @@ class MainForm(FlaskForm):
         ],
         option_widget=CheckboxInput(),
         widget=ListWidget(prefix_label=False),
-        validators=[DataRequired()]
+        validators=[InputRequired(message="Selecione pelo menos uma opção")]
     )
     
     risco_ambiental = SelectMultipleField(
@@ -44,9 +43,9 @@ class MainForm(FlaskForm):
         ],
         option_widget=CheckboxInput(),
         widget=ListWidget(prefix_label=False),
-        validators=[DataRequired()]
+        validators=[InputRequired(message="Selecione pelos menos uma opção")]
     )   
-    risco_ambiental_outro = StringField('Risco ambiental que não esteja elencado acima')
+    risco_ambiental_outro = StringField('6.1 Risco ambiental que não esteja elencado acima')
     
     tradicional = SelectField(
         '7. A comunidade se reconhece como tradicional?',
@@ -55,7 +54,6 @@ class MainForm(FlaskForm):
             ('nao', 'Não'),
             ('nao_sabe_informar', 'Não sabe informar'),
         ],
-        validators=[DataRequired()]
     )
     
     impacto_grande_projeto = SelectField(
@@ -64,10 +62,9 @@ class MainForm(FlaskForm):
             ('sim', 'Sim'),
             ('nao', 'Não'),
         ],
-        validators=[DataRequired()]
     )
     
-    impacto_grande_projeto_sim = StringField('Se sim, qual?')
+    impacto_grande_projeto_sim = StringField('8.1 Se sim, qual?')
     
     processo_judicial = SelectField(
         '9. A comunidade tem conhecimento da existência de processo judicial de reintegração de posse?',
@@ -75,10 +72,9 @@ class MainForm(FlaskForm):
             ('sim', 'Sim'),
             ('nao', 'Não')
         ],
-        validators=[DataRequired()]
     )
     
-    processo_judicial_sim = StringField('Se sim, qual o número do processo (se souber)')
+    processo_judicial_sim = StringField('9.1 Se sim, qual o número do processo (se souber)')
     
     conhece_titularidade = SelectField(
         '10. A comunidade conhece a titularidade da área ocupada?',
@@ -86,10 +82,9 @@ class MainForm(FlaskForm):
             ('sim', 'Sim'),
             ('nao', 'Não')
         ],
-        validators=[DataRequired()]
     )
     
-    conhece_titularidade_sim = StringField('Se sim, quem é o/a proprietário/a ou órgão público responsável?')
+    conhece_titularidade_sim = StringField('10.1 Se sim, quem é o/a proprietário/a ou órgão público responsável?')
     
     conflitos_fundiarios = SelectField(
         '11. Há relatos de violência relacionados a conflitos fundiários?',
@@ -97,10 +92,9 @@ class MainForm(FlaskForm):
             ('sim', 'Sim'),
             ('nao', 'Não')
         ],
-        validators=[DataRequired()]
     )
     
-    conflitos_fundiarios_sim = TextAreaField('Se sim, quais?')
+    conflitos_fundiarios_sim = TextAreaField('11.1 Se sim, quais?')
     
     ameacas = SelectField(
         '12. Há conhecimento de ameaças direcionadas às lideranças locais?',
@@ -108,10 +102,9 @@ class MainForm(FlaskForm):
             ('sim', 'Sim'),
             ('nao', 'Não')
         ],
-        validators=[DataRequired()]
     )
     
-    ameacas_relatos = TextAreaField('Se sim, gostaria de relatar?')
+    ameacas_relatos = TextAreaField('12.1 Se sim, gostaria de relatar?')
     
     relatos_de_violencia = TextAreaField('13. Campo aberto para relatos adicionais de violência ou conflito')
     
