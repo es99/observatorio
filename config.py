@@ -4,6 +4,7 @@ class Config:
     TITLE = 'cimov'
     SECRET_KEY = os.getenv('SECRET_KEY')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    FLASK_ADMIN_SWATCH = 'journal'
     
     @staticmethod
     def init_app(app):

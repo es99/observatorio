@@ -6,6 +6,7 @@ from cimov.extensions import bootstrap
 from cimov.extensions import db
 from cimov.extensions import migrate
 from cimov.extensions import login
+from cimov.extensions import admin
 
 def create_app(config_name):
     app = Flask(__name__)
@@ -18,5 +19,6 @@ def create_app(config_name):
     db.init_app(app)
     migrate.init_app(app)
     login.init_app(app)
+    admin.init_app(app)
     
     return app
