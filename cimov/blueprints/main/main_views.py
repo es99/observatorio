@@ -2,11 +2,13 @@ from flask import Blueprint, render_template, redirect, url_for, flash, request
 from cimov.extensions.db import db, DiagnosticoTerritorial
 from cimov.extensions.forms import MainForm
 from datetime import date, datetime
+from flask_login import login_required, current_user
 import json
 
 main = Blueprint('main', __name__)
 
 @main.route('/', methods=['GET', 'POST'])
+@login_required
 def index():
     form = MainForm()
     if form.validate_on_submit():
@@ -37,7 +39,7 @@ def index():
                 existe_proc_judicial=processo_jud, num_proc_judicial=num_proc_judicial, conhece_titular=titular,
                 titular=qual_titular, relatos_violencia=violencia, quais_relatos=relato_violencia,
                 ameacas_liderancas=ameacas_liderancas, quais_ameacas=qual_ameaca, relatos_violencia_adicionais=rel_adicionais,
-                data=data)
+                data=data, usuario=current_user.nome_completo)
         db.session.add(formulario)
         db.session.commit()
         flash('Formulário enviado com sucesso!', 'success')

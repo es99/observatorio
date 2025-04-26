@@ -76,6 +76,24 @@
         <div class="container d-flex align-items-center gap-3">
             <img src="{{ url_for('static', filename='img/observatorio.png') }}" alt="Observatório Terra e Moradia" class="brand-logo">
             <h1 class="h4 m-0">Cimov - Comunidades em Movimento</h1>
+
+            <!-- Menu de navegação -->
+            <ul class="d-flex align-items-center gap-3 ms-auto mb-0">
+                {% if current_user.is_authenticated %}
+                    <li>
+                        <a href="{{ url_for('auth.logout') }}" class="text-white text-decoration-none">
+                            Sair <small>({{ current_user.email }})</small>
+                        </a>
+                    </li>
+                {% else %}
+                    <li>
+                        <a href="{{ url_for('auth.login') }}" class="btn btn-cimov py-1 px-3">
+                            Acesso Restrito
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+
         </div>
     </header>
 

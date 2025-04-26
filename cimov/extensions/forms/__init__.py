@@ -1,7 +1,9 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, IntegerField, SelectField, SelectMultipleField, TextAreaField
-from wtforms.validators import DataRequired, InputRequired
+from wtforms import StringField, SubmitField, IntegerField, SelectField, SelectMultipleField, TextAreaField, BooleanField, PasswordField
+from wtforms.validators import DataRequired, InputRequired, Length, Email, EqualTo
 from wtforms.widgets import ListWidget, CheckboxInput
+from cimov.extensions.db import User
+from wtforms import ValidationError
 
 class MainForm(FlaskForm):
     nome_territorio = StringField('1. Nome do território atendido', validators=[DataRequired()])
@@ -106,6 +108,47 @@ class MainForm(FlaskForm):
     
     ameacas_relatos = TextAreaField('12.1 Se sim, gostaria de relatar?')
     
-    relatos_de_violencia = TextAreaField('13. Campo aberto para relatos adicionais de violência ou conflito')
+    relatos_de_violencia = TextAreaField('13. Campo aberto para relatos adicionais sobre violências ou conflitos na comunidade')
     
     submit = SubmitField('Enviar')
+    
+class LoginForm(FlaskForm):
+    email = StringField('Email', validators=[
+        DataRequired(message='Campo obrigatório!'),
+        Length(min=1, max=64),
+        Email(message='Formato de email inválido!')
+    ])
+    password = PasswordField('Senha', validators=[
+        DataRequired(message='Campo obrigatório!'),
+        Length(min=8, message='A senha deve ter pelo menos 8 caracteres')
+    ])
+    remember_me = BooleanField('Lembrar-me')
+    
+class RegistroForm(FlaskForm):
+    email = StringField('Email', validators=[
+        DataRequired(message='Campo obrigatório!'),
+        Email(message='Formato de email inválido!')
+    ])
+    nome = StringField('Nome Completo', validators=[
+        DataRequired(message='Campo obrigatório!')
+    ])
+    cpf = StringField('CPF', validators=[
+        DataRequired(message='Campo obrigatório!'),
+        Length(min=14, max=14)
+    ])
+    telefone = StringField('Tel', validators=[
+        DataRequired(message='Campo obrigatório'),
+        Length(min=8, max=15)
+    ])
+    password = PasswordField('Senha', validators=[
+        DataRequired(message="Campo obrigatório!"),
+        EqualTo('password2', message='As senhas devem ser iguais.')
+    ])
+    password2 = PasswordField('Confirme a senha', validators=[
+        DataRequired(message="Campo obrigatório!")
+    ])
+    submit = SubmitField('Registrar')
+    
+    def validate_email(self, field):
+        if User.query.filter_by(email=field.data).first():
+            raise ValidationError('Este email já encontra-se registrado!')
