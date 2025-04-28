@@ -1,20 +1,20 @@
-ARG PYTHON_VERSION=3.9
-ARG BASE_IMAGE_TAG=3.15
+ARG PYTHON_VERSION="3.10-slim"
 
-FROM python:${PYTHON_VERSION}-alpine${BASE_IMAGE_TAG} AS builder
+FROM python:${PYTHON_VERSION} AS builder
 
 LABEL org.opencontainers.image.created="26-05-25"
 LABEL org.opencontainers.image.authors="Engels F. P. Souza - <engels.franca@gmail.com>"
 LABEL org.opencontainers.image.url="https://github.com/es99/observatorio"
 
-RUN <<EOF
-apk add gcc
-apk add g++
-apk add libffi-dev
-apk add libffi musl-dev mariadb-connector-c-dev
-EOF
+RUN apt-get update && apt-get install -y \
+    gcc \
+    g++ \
+    libffi-dev \
+    libssl-dev
 
-RUN adduser -D flasky
+RUN useradd -m \
+    -s /usr/bin/nologin flasky
+
 USER flasky
 WORKDIR /home/flasky
 
@@ -26,12 +26,14 @@ venv/bin/pip install --upgrade pip
 venv/bin/pip install -r requirements/docker.txt
 EOF
 
-FROM python:${PYTHON_VERSION}-alpine${BASE_IMAGE_TAG}
+FROM python:${PYTHON_VERSION}
 
 ENV FLASK_APP=flasky.py
 ENV FLASK_CONFIG=docker
 
-RUN adduser -D flasky
+RUN useradd -m \
+    -s /usr/sbin/nologin flasky
+
 USER flasky
 WORKDIR /home/flasky
 

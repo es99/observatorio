@@ -1,0 +1,60 @@
+services:
+  traefik:
+    image: traefik
+    container_name: traefik
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      - TZ=${TZ}
+    networks:
+      - cimov
+    ports:
+      - 80:80 # HTTP entrypoint
+      - 8080:8080 # Dashboar webgui
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./traefik.yml:/traefik.yml:ro
+
+  cimov:
+    image: esouza99/cimov:1.0
+    container_name: cimov_app
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    depends_on:
+      - db
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.cimov.rule=Host(`cimov.localhost`)"
+      - "traefik.http.routers.cimov.entrypoints=web"
+      - "traefik.http.services.cimov.loadbalancer.server.port=9000" # Gunicorn listen on port 9000
+    environment:
+      - TZ=${TZ}
+      - SECRET_KEY=${SECRET_KEY}
+      - DATABASE_URL=${DATABASE_URL}
+    expose:
+      - 9000
+    networks:
+      - cimov
+
+  db:
+    image: mysql:9
+    environment:
+      - MYSQL_RANDOM_ROOT_PASSWORD=yes
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+    volumes:
+      - cimov_db:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    networks:
+      - cimov
+
+volumes:
+  cimov_db:
+
+networks:
+  cimov:
+    name: cimov
