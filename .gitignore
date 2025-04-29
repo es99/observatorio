@@ -171,3 +171,44 @@ cython_debug/
 #
 flask-env.sh
 .env
+
+# Created by https://www.toptal.com/developers/gitignore/api/terraform
+# Edit at https://www.toptal.com/developers/gitignore?templates=terraform
+
+### Terraform ###
+# Local .terraform directories
+/terraform/prod/**/.terraform/*
+
+# .tfstate files
+/terraform/prod/*.tfstate
+/terraform/prod/*.tfstate.*
+
+# Crash log files
+terraform/prod/crash.log
+terraform/prod/crash.*.log
+
+# Exclude all .tfvars files, which are likely to contain sensitive data, such as
+# password, private keys, and other secrets. These should not be part of version
+# control as they are data points which are potentially sensitive and subject
+# to change depending on the environment.
+terraform/prod/*.tfvars
+terraform/prod/*.tfvars.json
+
+# Ignore override files as they are usually used to override resources locally and so
+# are not checked in
+/terraform/prod/override.tf
+/terraform/prod/override.tf.json
+/terraform/prod/*_override.tf
+/terraform/prod/*_override.tf.json
+
+# Include override files you do wish to add to version control using negated pattern
+# !example_override.tf
+
+# Include tfplan files to ignore the plan output of command: terraform plan -out=tfplan
+# example: *tfplan*
+
+# Ignore CLI configuration files
+/terraform/prod/.terraformrc
+/terraform/prod/terraform.rc
+
+# End of https://www.toptal.com/developers/gitignore/api/terraform
